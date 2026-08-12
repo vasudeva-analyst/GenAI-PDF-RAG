@@ -450,7 +450,7 @@ The ChromaDB directory is generated locally and is excluded from Git using `.git
 
 
 
-Vasudeva Reddy
+\*\*Vasudeva Reddy\*\*
 
 
 
