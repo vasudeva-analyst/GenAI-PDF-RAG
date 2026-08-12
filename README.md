@@ -28,7 +28,7 @@ When a user asks a question, the application:
 
 3\. Converts the chunks into embeddings.
 
-4\. Stores the embeddings in ChromaDB.
+4\. Stores the chunks and embeddings in ChromaDB.
 
 5\. Searches for the most relevant chunks based on the user's question.
 
@@ -108,65 +108,47 @@ Generated Answer
 
 Streamlit UI
 
-```
+Technologies Used
+
+Python
+
+LangChain
+
+LangChain Classic
+
+Hugging Face
+
+Sentence Transformers
+
+ChromaDB
+
+GPT-OSS-120B
+
+Streamlit
+
+PyPDF
+
+RAG Pipeline
+
+1\. Document Loading
 
 
 
-\## Technologies Used
+The YOLOv9 research paper is loaded using PyPDFLoader.
 
 
-
-\* Python
-
-\* LangChain
-
-\* LangChain Classic
-
-\* Hugging Face
-
-\* Sentence Transformers
-
-\* ChromaDB
-
-\* GPT-OSS-120B
-
-\* Streamlit
-
-\* PyPDF
-
-
-
-\## RAG Pipeline
-
-
-
-\### 1. Document Loading
-
-
-
-The YOLOv9 research paper is loaded using `PyPDFLoader`.
-
-
-
-```python
 
 loader = PyPDFLoader("yolov9\_paper.pdf")
 
 data = loader.load()
 
-```
-
-
-
-\### 2. Text Splitting
+2\. Text Splitting
 
 
 
 The extracted document is divided into smaller chunks.
 
 
-
-```python
 
 text\_splitter = RecursiveCharacterTextSplitter(
 
@@ -180,15 +162,13 @@ text\_splitter = RecursiveCharacterTextSplitter(
 
 docs = text\_splitter.split\_documents(data)
 
-```
-
 
 
 The overlap helps preserve context between neighboring chunks.
 
 
 
-\### 3. Embeddings
+3\. Embeddings
 
 
 
@@ -196,11 +176,7 @@ Each text chunk is converted into a numerical vector using the Hugging Face Sent
 
 
 
-```text
-
 sentence-transformers/all-mpnet-base-v2
-
-```
 
 
 
@@ -208,15 +184,13 @@ These vectors allow the application to perform semantic similarity search.
 
 
 
-\### 4. Vector Database
+4\. Vector Database
 
 
 
 The embeddings and document chunks are stored in ChromaDB.
 
 
-
-```python
 
 vectorstore = Chroma.from\_documents(
 
@@ -228,19 +202,13 @@ vectorstore = Chroma.from\_documents(
 
 )
 
-```
-
-
-
-\### 5. Retrieval
+5\. Retrieval
 
 
 
 When a user asks a question, the retriever searches ChromaDB and returns the five most relevant chunks.
 
 
-
-```python
 
 retriever = vectorstore.as\_retriever(
 
@@ -250,11 +218,7 @@ retriever = vectorstore.as\_retriever(
 
 )
 
-```
-
-
-
-\### 6. Generation
+6\. Generation
 
 
 
@@ -266,7 +230,7 @@ The prompt instructs the model to answer using the retrieved context and to say 
 
 
 
-\### 7. Streamlit
+7\. Streamlit
 
 
 
@@ -274,7 +238,7 @@ Streamlit provides a simple web interface where users can enter questions about 
 
 
 
-\## Installation
+Installation
 
 
 
@@ -282,11 +246,7 @@ Clone the repository:
 
 
 
-```bash
-
 git clone https://github.com/vasudeva-analyst/GenAI-PDF-RAG.git
-
-```
 
 
 
@@ -294,11 +254,7 @@ Move into the project directory:
 
 
 
-```bash
-
 cd GenAI-PDF-RAG
-
-```
 
 
 
@@ -306,13 +262,9 @@ Create and activate the Conda environment:
 
 
 
-```bash
-
 conda create -n rag\_streamlit python=3.10 -y
 
 conda activate rag\_streamlit
-
-```
 
 
 
@@ -320,15 +272,9 @@ Install the required packages:
 
 
 
-```bash
-
 pip install -r requirements.txt
 
-```
-
-
-
-\## Hugging Face API
+Hugging Face API
 
 
 
@@ -344,7 +290,7 @@ The application accepts the token through the Streamlit interface.
 
 
 
-\## Run the Application
+Run the Application
 
 
 
@@ -352,11 +298,7 @@ Start Streamlit:
 
 
 
-```bash
-
 streamlit run app.py
-
-```
 
 
 
@@ -368,15 +310,9 @@ For example:
 
 
 
-```text
-
 http://localhost:8501
 
-```
-
-
-
-\## Example
+Example
 
 
 
@@ -384,11 +320,7 @@ Example question:
 
 
 
-```text
-
 What is new in YOLOv9?
-
-```
 
 
 
@@ -396,11 +328,7 @@ The application retrieves relevant sections from the YOLOv9 paper and generates 
 
 
 
-\## Project Structure
-
-
-
-```text
+Project Structure
 
 GenAI-PDF-RAG/
 
@@ -418,43 +346,35 @@ GenAI-PDF-RAG/
 
 └── .gitignore
 
-```
+
+
+The ChromaDB directory is generated locally and is excluded from Git using .gitignore.
 
 
 
-The ChromaDB directory is generated locally and is excluded from Git using `.gitignore`.
+Future Improvements
+
+Support multiple PDF documents
+
+Add chat history
+
+Display document sources for each answer
+
+Add PDF upload through Streamlit
+
+Improve retrieval with hybrid search
+
+Add conversation memory
+
+Deploy the application to the cloud
+
+Author
 
 
 
-\## Future Improvements
-
-
-
-\* Support multiple PDF documents
-
-\* Add chat history
-
-\* Display document sources for each answer
-
-\* Add PDF upload through Streamlit
-
-\* Improve retrieval with hybrid search
-
-\* Add conversation memory
-
-\* Deploy the application to the cloud
-
-
-
-\## Author
-
-
-
-\*\*Vasudeva Reddy\*\*
+Vasudeva Reddy
 
 
 
 GitHub: https://github.com/vasudeva-analyst
-
-
 
